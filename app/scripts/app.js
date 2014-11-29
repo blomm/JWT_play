@@ -8,5 +8,4 @@
  *
  * Main module of the application.
  */
-angular
-  .module('jwtPlayApp', []);
+angular.module('jwtPlayApp', ['ui.router']);
