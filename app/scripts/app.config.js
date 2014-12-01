@@ -11,6 +11,7 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider)
     })
     .state('register',{
       url:'/register',
-      templateUrl:'/views/register.html'
+      templateUrl:'/views/register.html',
+      controller: 'RegisterCtrl'
     });
   });
