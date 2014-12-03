@@ -10,8 +10,10 @@
 angular.module('jwtPlayApp')
   .controller('RegisterCtrl', function ($scope, $http, alert) {
     $scope.submit = function(){
-      var url = '/';
-      var user = {};
+
+      var url = 'http://localhost:3000/register';
+      var user={name:'Alex'};
+
       $http.post(url, user).success(function(resp){
         alert('success', 'OK!', 'You are now registered.');
       }).error(function(error){
