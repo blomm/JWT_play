@@ -1,5 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var User=require('./models/User.js');
 
 var app = express();
 
@@ -14,10 +16,21 @@ app.use(function(req, res, next){
   next();
 })
 
+
+
 app.post('/register', function(req, res){
-  console.log(req.body);
-  res.send("hi!");
+  var user = req.body;
+  var newUser = new User.model({
+    email: user.email,
+    password: user.password
+  })
+
+  newUser.save(function(err){
+    res.status(200).send(newUser.toJSON());
+  });
 })
+
+mongoose.connect('mongodb://localhost/jwt')
 
 var server = app.listen(3000, function(){
   console.log('api listening on', server.address().port);

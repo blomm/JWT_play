@@ -12,7 +12,8 @@ angular.module('jwtPlayApp')
     $scope.submit = function(){
 
       var url = 'http://localhost:3000/register';
-      var user={name:'Alex'};
+
+      var user = {email:$scope.email,password:$scope.password};
 
       $http.post(url, user).success(function(resp){
         alert('success', 'OK!', 'You are now registered.');
