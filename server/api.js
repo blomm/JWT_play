@@ -6,6 +6,7 @@ var app = express();
 app.use(bodyParser.json());
 
 app.use(function(req, res, next){
+  //these headers will enable CORS (cross origin resource sharing)
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
