@@ -29,7 +29,7 @@ app.post('/register', function(req, res){
 
   var payload= {
     iss: req.hostname,
-    sub: user._id
+    sub: newUser.id
   }
 
   var token = jwt.encode(payload, "sh..");
@@ -45,10 +45,18 @@ app.post('/register', function(req, res){
 var jobs =['cook','cleaner','carpenter'];
 
 app.get('/jobs',function(req,res){
-  console.log(req.headers);
+
   if(!req.headers.authorization){
-    return res.status(401).send({message: 'You are not authorised'});
+    res.status(401).send({message: 'You are not authorised'});
   }
+  //remove the "Bearer " text at the start of the token...
+  var token = req.headers.authorization.split(' ')[1];
+  var payload=jwt.decode(token, "sh..");
+
+  if(!payload.sub){
+    return res.status(401).send({message: 'Authentication failed!'});
+  }
+
   res.json(jobs);
 })
 
