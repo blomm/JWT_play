@@ -17,6 +17,8 @@ app.use(function(req, res, next){
   next();
 })
 
+
+
 app.post('/register', function(req, res){
   var user = req.body;
 
@@ -40,9 +42,17 @@ app.post('/register', function(req, res){
   });
 })
 
-mongoose.connect('mongodb://localhost/jwt')
+var jobs =['cook','cleaner','carpenter'];
 
-//console.log(jwt.encode('hi','secret'));
+app.get('/jobs',function(req,res){
+  console.log(req.headers);
+  if(!req.headers.authorization){
+    return res.status(401).send({message: 'You are not authorised'});
+  }
+  res.json(jobs);
+})
+
+mongoose.connect('mongodb://localhost/jwt')
 
 var server = app.listen(3000, function(){
   console.log('api listening on', server.address().port);
