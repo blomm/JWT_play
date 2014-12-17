@@ -1,16 +1,11 @@
 'use strict';
 
 
-angular.module('jwtPlayApp').controller('LoginCtrl', function ($scope, $http, alert, authToken, API_URL) {
+angular.module('jwtPlayApp').controller('LoginCtrl', function ($scope, alert, auth) {
+
   $scope.submit = function(){
-
-    var url = API_URL+ 'login';
-
-    var user = {email:$scope.email,password:$scope.password};
-
-    $http.post(url, user).success(function(resp){
-      authToken.setToken(resp.token);
-      alert('success', 'Logged in!', ' Welcome, '+ resp.user.email);
+    auth.login($scope.email, $scope.password).success(function(res){
+      alert('success', 'Logged in!', ' Welcome, '+ res.user.email);
     }).error(function(error){
       alert('warning', 'Oops!', ' Could not log in: ' + error);
     });

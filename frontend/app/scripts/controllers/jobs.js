@@ -5,7 +5,7 @@ angular.module('jwtPlayApp').controller('JobsCtrl', function ($scope, $http, ale
   $http.get(API_URL+'jobs').success(function(jobs){
     $scope.jobs = jobs;
   }).error(function(err){
-    alert('warning', 'Unable to get jobs', err.message);
+    alert('warning', 'Unable to get jobs: ', err.message);
   });
 
 });

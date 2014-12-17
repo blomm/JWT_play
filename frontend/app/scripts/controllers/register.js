@@ -1,15 +1,10 @@
 'use strict';
 
-angular.module('jwtPlayApp').controller('RegisterCtrl', function ($scope, $http, alert, authToken) {
+angular.module('jwtPlayApp').controller('RegisterCtrl', function ($scope, alert, auth) {
     $scope.submit = function(){
 
-      var url = 'http://localhost:3000/register';
-
-      var user = {email:$scope.email,password:$scope.password};
-
-      $http.post(url, user).success(function(resp){
-        authToken.setToken(resp.token);
-        alert('success', 'Account created!', ' Welcome, '+ resp.user.email);
+      auth.register($scope.email, $scope.password).success(function(res){
+        alert('success', 'Account created!', ' Welcome, '+ res.user.email);
       }).error(function(error){
         alert('warning', 'Oops!', ' Could not register: ' + error);
       });

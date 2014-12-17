@@ -4,10 +4,17 @@ var mongoose = require('mongoose');
 var User = require('./models/User.js');
 //var jwt= require('./services/jwt.js');
 var jwt = require('jwt-simple');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
 app.use(bodyParser.json());
+app.use(passport.initialize());
+
+passport.serializeUser(function(user, done){
+  done(null, user.id);
+})
 
 app.use(function(req, res, next){
   //these headers will enable CORS (cross origin resource sharing)
@@ -18,11 +25,53 @@ app.use(function(req, res, next){
   next();
 })
 
+var strategyOptions = {
+  usernameField:'email'
+};
+
+var loginStrategy = new LocalStrategy(strategyOptions, function(email, password, done){
+    var searchUser = {email:email};
+    User.findOne(searchUser,function(err, user){
+      if(err) return done(err);
+
+      if(!user){
+        return done(null, false, {message:'Email does not exist on record'});
+      }
+
+      user.comparePasswords(password, function(err, isMatch){
+        if(err) return done(err);
+
+        if (!isMatch) {
+          return done(null, false, {message:'Incorrect password'});
+        }
+        return done(null, user);
+        //createSendToken(user, res);
+      });
+    })
+});
+
+
+
+var registerStrategy = new LocalStrategy(strategyOptions, function(email, password, done){
+
+  var newUser = new User({
+    email: email,
+    password: password
+  });
+
+  newUser.save(function(err){
+    return done(null, newUser);
+    //createSendToken(newUser, res);
+  });
+})
+
+passport.use('local-login', loginStrategy);
+passport.use('local-register', registerStrategy);
 
 //register, any user can register
-app.post('/register', function(req, res){
-
-  var user = req.body;
+app.post('/register', passport.authenticate('local-register'), function(req, res){
+  createSendToken(req.user, res);
+  /*var user = req.body;
 
   var newUser = new User({
     email: user.email,
@@ -31,34 +80,26 @@ app.post('/register', function(req, res){
 
   newUser.save(function(err){
     createSendToken(newUser, res);
-  });
+  });*/
 })
 
 //login, user already has registered
-app.post('/login', function(req, res){
-  req.user = req.body;
+app.post('/login', passport.authenticate('local-login'), function(req, res){
 
-  var searchUser = {email:req.user.email};
+  createSendToken(req.user, res);
 
-  User.findOne(searchUser,function(err, user){
-    if(err) throw err;
+  /*passport.authenticate('local', function(err, user){
+    if(err) next(err);
 
-    if(!user){
-      return res.status(401).send('Email does not exist on record');
-    }
-
-    user.comparePasswords(req.user.password, function(err, isMatch){
-      console.log('error: '+ err);
-      if(err){
-        return res.status(401).send('Incorrect password error');
-      }
-
-      if (!isMatch) {
-        return res.status(401).send('Incorrect password');
-      }
+    req.login(user, function(err){
+      if(err) next(err);
       createSendToken(user, res);
-    });
-  })
+    })
+  })(req, res, next)
+*/
+  //req.user = req.body;
+  //var searchUser = {email:req.user.email};
+
 })
 
 function createSendToken(user, res){
