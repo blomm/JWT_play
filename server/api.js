@@ -59,9 +59,18 @@ var registerStrategy = new LocalStrategy(strategyOptions, function(email, passwo
     password: password
   });
 
-  newUser.save(function(err){
-    return done(null, newUser);
-    //createSendToken(newUser, res);
+  User.findOne({email:email},function(err, user) {
+
+    if(err) return done(err);
+
+    if(user){
+      return done(null, false, {message:'Email already exists '});
+    }
+
+    newUser.save(function (err) {
+      return done(null, newUser);
+      //createSendToken(newUser, res);
+    });
   });
 })
 
