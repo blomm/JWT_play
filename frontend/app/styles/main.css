@@ -127,8 +127,12 @@ body {
 }
 
 .main-alert{
-    max-width:400px;
-    margin: 0 auto;
+  position:absolute;
+  top: 70px;
+  left:5px;
+  right:5px;
+  max-width:400px;
+  margin: 0 auto;
 }
 .alert-hidden{
     visibility:hidden;

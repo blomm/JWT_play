@@ -1,3 +1,4 @@
+//all of this code can be replaced by jwt-simple: https://www.npmjs.com/package/jwt-simple
 var crypto=require('crypto')
 
 exports.encode = function(payload, secret){

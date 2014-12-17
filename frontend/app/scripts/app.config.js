@@ -22,6 +22,11 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider,
       url:'/register',
       templateUrl:'/views/register.html',
       controller: 'RegisterCtrl'
+    })
+    .state('login',{
+      url:'/login',
+      templateUrl:'/views/login.html',
+      controller: 'LoginCtrl'
     });
 
     $httpProvider.interceptors.push('authInterceptor');

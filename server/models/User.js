@@ -15,7 +15,11 @@ UserSchema.methods.toJSON = function(){
     return user;
 }
 
-exports.model = mongoose.model('User', UserSchema);
+UserSchema.methods.comparePasswords = function(password, callback){
+    console.log('my given password: '+ password);
+    console.log('the db password: ' + this.password);
+    bcrypt.compare(password, this.password, callback);
+}
 
 //this hashes our password before it's saved
 UserSchema.pre('save', function(next){
@@ -36,4 +40,5 @@ UserSchema.pre('save', function(next){
 
 })
 
+module.exports = mongoose.model('User', UserSchema);
 

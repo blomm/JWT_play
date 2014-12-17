@@ -1,14 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name jwtPlayApp.controller:RegisterCtrl
- * @description
- * # RegisterCtrl
- * Controller of the jwtPlayApp
- */
-angular.module('jwtPlayApp')
-  .controller('RegisterCtrl', function ($scope, $http, alert, authToken) {
+angular.module('jwtPlayApp').controller('RegisterCtrl', function ($scope, $http, alert, authToken) {
     $scope.submit = function(){
 
       var url = 'http://localhost:3000/register';
@@ -17,9 +9,9 @@ angular.module('jwtPlayApp')
 
       $http.post(url, user).success(function(resp){
         authToken.setToken(resp.token);
-        alert('success', 'Account Created!', 'Welcome, '+ resp.user.email);
+        alert('success', 'Account created!', ' Welcome, '+ resp.user.email);
       }).error(function(error){
-        alert('warning', 'Oops!', 'Could not register:' + error);
+        alert('warning', 'Oops!', ' Could not register: ' + error);
       });
 
     };
