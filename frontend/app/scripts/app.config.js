@@ -31,4 +31,17 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider,
 
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .constant('API_URL', 'http://localhost:3000/');
+  .constant('API_URL', 'http://localhost:3000/')
+  .run(function($window){
+    var params = $window.location.search.substring(1);
+
+    if(params && $window.opener && $window.opener.location.origin === $window.location.origin){
+      var code = decodeURIComponent(params.split('=')[1]);
+
+      //post message from popup window to main window
+      $window.opener.postMessage(code, $window.location.origin);
+
+    }
+
+
+  });
