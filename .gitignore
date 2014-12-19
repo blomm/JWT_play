@@ -3,4 +3,5 @@ dist
 .tmp
 .sass-cache
 bower_components
-server/services/config.js
+
+config.js
