@@ -1,10 +1,8 @@
 'use strict';
 
-angular.module('jwtPlayApp').controller('HeaderCtrl', function ($scope, authToken) {
+angular.module('jwtPlayApp').controller('HeaderCtrl', function ($scope, $auth) {
 
   $scope.isAuthenticated = function(){
-    return authToken.isAuthenticated();
+    return $auth.isAuthenticated();
   };
-
-
 });

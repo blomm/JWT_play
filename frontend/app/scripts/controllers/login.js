@@ -1,22 +1,22 @@
 'use strict';
 
 
-angular.module('jwtPlayApp').controller('LoginCtrl', function ($scope, alert, auth) {
+angular.module('jwtPlayApp').controller('LoginCtrl', function ($scope, alert, auth, $auth) {
 
   $scope.submit = function(){
-    auth.login($scope.email, $scope.password).success(function(res){
-      alert('success', 'Logged in!', ' Welcome, '+ res.user.email);
-    }).error(function(err){
-      handleError(err);
-    });
+    $auth.login({email:$scope.email, password:$scope.password}).then(function(res){
+      alert('success', 'Logged in!', ' Welcome, '+ res.data.user.email);
+    }).catch(
+      handleError
+    );
   };
 
-  $scope.google = function(){
-      auth.googleAuth().then(function(res){
-      alert('success', 'Logged in!', ' Welcome, '+ res.user.displayName);
-    },function(err){
-      handleError(err);
-    });
+  $scope.authenticate = function(provider){
+    $auth.authenticate(provider).then(function(res){
+      alert('success', 'Logged in!', ' Welcome, '+ res.data.user.displayName);
+    }).catch(
+      handleError
+    );
   };
 
   function handleError(err){

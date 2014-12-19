@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('jwtPlayApp').controller('LogoutCtrl', function (authToken, $state) {
-    authToken.removeToken();
+angular.module('jwtPlayApp').controller('LogoutCtrl', function ($auth, $state) {
+    $auth.logout();
     $state.go('main');
   });

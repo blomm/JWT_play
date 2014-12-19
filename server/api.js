@@ -2,11 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/User.js');
-//var jwt= require('./services/jwt.js');
+var createSendToken = require('./services/jwt.js');
 var jwt = require('jwt-simple');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var request = require('request');
+var facebookAuth = require('./services/facebookAuth.js')
 
 var app = express();
 
@@ -80,6 +81,7 @@ passport.use('local-register', registerStrategy);
 
 //register, any user can register
 app.post('/register', passport.authenticate('local-register'), function(req, res){
+
   createSendToken(req.user, res);
   /*var user = req.body;
 
@@ -112,21 +114,7 @@ app.post('/login', passport.authenticate('local-login'), function(req, res){
 
 })
 
-function createSendToken(user, res){
-
-  var payload= {
-    //iss: req.hostname,
-    sub: user.id
-  }
-
-  //token is the header, the payload, and a signature created using the secret
-  var token = jwt.encode(payload, "sh..");
-
-  res.status(200).send({
-    user:user.toJSON(),
-    token:token
-  });
-}
+app.post('/auth/facebook', facebookAuth);
 
 app.post('/auth/google', function(req, res){
 
@@ -162,7 +150,7 @@ app.post('/auth/google', function(req, res){
         //if we don't find the user in our db, register them
         var newUser = new User({googleId:profile.sub,displayName:profile.name});
         newUser.save(function(err){
-          createSendToken(newUser, res)
+          createSendToken(newUser, res);
         })
       })
     })

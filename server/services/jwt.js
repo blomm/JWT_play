@@ -1,3 +1,24 @@
+var jwt = require('jwt-simple');
+var moment = require('moment');
+
+module.exports = function(user, res){
+    var payload= {
+        //iss: req.hostname,
+        sub: user.id,
+        exp:moment().add(10,'days').unix()
+    }
+
+    //token is the header, the payload, and a signature created using the secret
+    var token = jwt.encode(payload, "sh..");
+
+    res.status(200).send({
+        user:user.toJSON(),
+        token:token
+    });
+}
+
+//old code below - how to manually set create tokens, encoding, decoding and all...
+/*
 //all of this code can be replaced by jwt-simple: https://www.npmjs.com/package/jwt-simple
 var crypto=require('crypto')
 
@@ -51,4 +72,4 @@ function base64Decode(str){
 //this creates the signature, a crypto-signed combination of the header and the payload
 function sign(str, key){
     return crypto.createHmac('sha256', key).update(str).digest('base64');
-}
+}*/

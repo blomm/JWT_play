@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider, $httpProvider){
+angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider, $httpProvider, $authProvider, API_URL){
 
   $urlRouterProvider.otherwise('/');
 
@@ -27,6 +27,19 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider,
       url:'/login',
       templateUrl:'/views/login.html',
       controller: 'LoginCtrl'
+    });
+
+    $authProvider.loginUrl = API_URL + 'login';
+    $authProvider.signupUrl = API_URL + 'register';
+
+    $authProvider.google({
+      clientId: '887645893823-1iimoab8icv1o6nqlufodket0f2sv0sk.apps.googleusercontent.com',
+      url: API_URL + 'auth/google'
+    });
+
+    $authProvider.facebook({
+      clientId: '1538967453010085',
+      url: API_URL + 'auth/facebook'
     });
 
     $httpProvider.interceptors.push('authInterceptor');

@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('jwtPlayApp', ['ui.router','ngAnimate']);
+angular.module('jwtPlayApp', ['ui.router','ngAnimate', 'satellizer']);
