@@ -6,7 +6,7 @@ var createSendToken = require('./jwt.js');
 
 
 module.exports = function(req, res){
-    
+
     var accessTokenUrl='https://graph.facebook.com/oauth/access_token';
     var graphApiUrl='https://graph.facebook.com/me';
 
