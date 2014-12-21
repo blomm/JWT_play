@@ -2,7 +2,8 @@ var _ = require('underscore');
 var fs = require('fs');
 var jwt = require('jwt-simple');
 var nodemailer = require('nodemailer');
-var config = require('./config.js')
+var config = require('./config.js');
+var User = require('../models/User.js');
 //var smtpTransport = require('nodemailer-smtp-transport');
 
 var config = require('./config.js');
@@ -50,7 +51,36 @@ exports.send = function(email, res){
     })
 }
 
+exports.handler = function(req,res){
+    var token = req.query.token;
 
+    var payload = jwt.decode(token, config.LOCAL_SECRET);
+
+    var email = payload.sub;
+
+    if(!email) return errorHandler(res);
+
+    User.findOne({email:email}, function(err, foundUser){
+        if(err) return res.status(500);
+
+        if(!foundUser) return errorHandler(res);
+
+        if (!foundUser.active){
+            foundUser.active = true;
+        }
+        foundUser.save(function(err){
+            if(err) return res.status(500);
+            return res.redirect(config.APP_URL);
+        });
+    })
+    console.log('token '+ token);
+}
+
+function errorHandler(res){
+    return res.status(401).send({
+        message:'Authentication failed, unable to verify email'
+    });
+}
 
 function getHtml(token){
     var path = './views/emailVerification.html';

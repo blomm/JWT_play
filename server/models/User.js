@@ -7,7 +7,8 @@ var UserSchema=new mongoose.Schema({
     password:String,
     googleId:String,
     facebookId:String,
-    displayName:String
+    displayName:String,
+    active:Boolean
 });
 
 //this removes the password from the user object

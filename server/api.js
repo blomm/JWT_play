@@ -75,6 +75,8 @@ app.post('/auth/google', googleAuth);
 
 app.get('/jobs', jobs);
 
+app.get('/auth/verifyEmail', emailVerification.handler)
+
 mongoose.connect('mongodb://localhost/jwt')
 
 var server = app.listen(3000, function(){
