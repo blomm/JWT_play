@@ -10,7 +10,7 @@ var googleAuth = require('./services/googleAuth.js');
 var emailVerification = require('./services/emailVerification.js');
 var app = express();
 
-emailVerification.send('fake@fake.com');
+//emailVerification.send('fake@fake.com');
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
@@ -36,7 +36,7 @@ passport.use('local-register', localStrategy.register);
 
 //register, any user can register
 app.post('/register', passport.authenticate('local-register'), function(req, res){
-
+  emailVerification.send(req.user.email, res);
   createSendToken(req.user, res);
   /*var user = req.body;
 

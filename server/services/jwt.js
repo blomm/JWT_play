@@ -1,5 +1,6 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
+var config = require('./config.js');
 
 module.exports = function(user, res){
     var payload= {
@@ -9,7 +10,7 @@ module.exports = function(user, res){
     }
 
     //token is the header, the payload, and a signature created using the secret
-    var token = jwt.encode(payload, "sh..");
+    var token = jwt.encode(payload, config.LOCAL_SECRET);
 
     res.status(200).send({
         user:user.toJSON(),
