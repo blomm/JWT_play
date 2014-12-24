@@ -14,6 +14,7 @@ var UserSchema=new mongoose.Schema({
 //this removes the password from the user object
 UserSchema.methods.toJSON = function(){
     var user = this.toObject();
+
     delete user.password;
 
     return user;

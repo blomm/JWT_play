@@ -29,8 +29,8 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider,
       controller: 'LoginCtrl'
     });
 
-    $authProvider.loginUrl = API_URL + 'login';
-    $authProvider.signupUrl = API_URL + 'register';
+    $authProvider.loginUrl = API_URL + 'auth/login';
+    $authProvider.signupUrl = API_URL + 'auth/register';
 
     $authProvider.google({
       clientId: '887645893823-1iimoab8icv1o6nqlufodket0f2sv0sk.apps.googleusercontent.com',
@@ -44,7 +44,7 @@ angular.module('jwtPlayApp').config(function($urlRouterProvider, $stateProvider,
 
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .constant('API_URL', 'http://localhost:3000/')
+  .constant('API_URL', 'http://localhost:1337/')
   .run(function($window){
     var params = $window.location.search.substring(1);
 
